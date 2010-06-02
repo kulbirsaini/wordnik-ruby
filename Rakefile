@@ -9,7 +9,7 @@ begin
     gem.description = %Q{The official gem for the wordnik.com API}
     gem.email = "aguvench@gmail.com"
     gem.homepage = "http://github.com/altay/wordnik-ruby"
-    gem.authors = ["altay"]
+    gem.authors = ["Altay Guvench"]
     gem.add_development_dependency "thoughtbot-shoulda", ">= 0"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
