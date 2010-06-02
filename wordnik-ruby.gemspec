@@ -24,8 +24,13 @@ Gem::Specification.new do |s|
      "Rakefile",
      "VERSION",
      "lib/wordnik-ruby.rb",
+     "lib/wordnik-ruby/definition.rb",
+     "lib/wordnik-ruby/example.rb",
+     "lib/wordnik-ruby/list.rb",
+     "lib/wordnik-ruby/word.rb",
      "test/helper.rb",
-     "test/test_wordnik-ruby.rb"
+     "test/test_wordnik-ruby.rb",
+     "wordnik-ruby.gemspec"
   ]
   s.homepage = %q{http://github.com/altay/wordnik-ruby}
   s.rdoc_options = ["--charset=UTF-8"]

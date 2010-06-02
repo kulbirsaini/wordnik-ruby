@@ -13,6 +13,13 @@ end
 class ApiServerError < StandardError
 end
 
+class InvalidApiKeyError < StandardError
+end
+
+class InvalidAuthTokenError < StandardError
+end
+
+
 # Ruby wrapper to access Wordnik definitions API. Has dependency on HTTParty gem.
 # No exception handling or other niceties. Intended as an API demo, not meant for production use
 class Wordnik
@@ -26,7 +33,7 @@ class Wordnik
   end
 
   def ensure_authentic
-    raise("This method requires a valid auth_token!") unless self.authenticated?
+    raise(InvalidAuthTokenError, "This method requires a valid auth_token!") unless self.authenticated?
   end
 
   @@client = nil
@@ -40,7 +47,7 @@ class Wordnik
   # e.g. w = Wordnik.new({:username=>'my_username', :password=>'my_password', :api_key=>'my_api_key'})
   # this will set the @api_key, @auth_token, and @user_id variables
   def initialize(options={}) 
-    raise("ERROR: missing api_key!") if options[:api_key].blank? 
+    raise(InvalidApiKeyError, "Missing api_key!") if options[:api_key].blank? 
     @api_key = options[:api_key]
     # pass in options[:username] and options[:password] if you want to authenticate this instance of the api client.
     # authenticating will allow you to perform all CRUD operations (e.g. List creation/deletion/etc)
