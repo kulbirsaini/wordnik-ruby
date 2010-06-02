@@ -5,8 +5,8 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "wordnik-ruby"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
+    gem.summary = %Q{The official gem for the wordnik.com API}
+    gem.description = %Q{The official gem for the wordnik.com API}
     gem.email = "aguvench@gmail.com"
     gem.homepage = "http://github.com/altay/wordnik-ruby"
     gem.authors = ["altay"]
