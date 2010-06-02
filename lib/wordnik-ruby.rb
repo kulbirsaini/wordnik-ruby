@@ -1,7 +1,6 @@
 require 'rubygems'
 require 'httparty'
 require 'json'
-#require 'api'
 require 'wordnik-ruby/word'
 require 'wordnik-ruby/definition'
 require 'wordnik-ruby/example'
