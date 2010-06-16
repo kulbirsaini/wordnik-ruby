@@ -87,10 +87,55 @@ class TestWordnikRuby < Test::Unit::TestCase
 
     end
 
+    should "instantiate a Wordnik object with authentication" do
+      Wordnik.new({:api_key=>@api_key})
+      stub_get('/account.json/authenticate/test_user?password=test_pw', 'user_token.json')
+      w = Wordnik.new({:api_key=>@api_key, :username=>"test_user", :password=>"test_pw"})
+      assert_equal w.class, Wordnik
+      assert_equal w.api_key, @api_key
+      assert w.auth_token, "test_token"
+      assert w.user_id, 1234567
+      assert w.authenticated?
+    end
+
     context "a valid, authenticated Wordnik client" do
       setup do
-        @w = Wordnik.new({:api_key=>@api_key, :username=>"", :password=>""})
+        Wordnik.new({:api_key=>@api_key})
+        stub_get('/account.json/authenticate/test_user?password=test_pw', 'user_token.json')
+        @w = Wordnik.new({:api_key=>@api_key, :username=>"test_user", :password=>"test_pw"})
       end
+
+      should "get a user's lists" do
+        stub_get('/wordLists.json', 'wordlists.json')
+        lists = @w.lists
+        assert_equal lists.length, 1
+      end
+
+      context "a valid list" do
+        setup do
+          stub_get('/wordLists.json', 'wordlists.json')
+          lists = @w.lists
+          @l = lists[0]
+        end
+
+        should "validate the test list's attrs" do
+          assert @l.is_a?(List)
+          assert_equal @l.user_name, 'test_user'
+          assert_equal @l.name, "animals"
+          assert_equal @l.description, "a trip to the zoo"
+          assert_equal @l.word_count, 3
+        end
+
+        should "get the words from a list" do
+          stub_get("/wordList.json/#{@l.permalink_id}/words", "wordlist_words.json")
+          list_words = @l.words
+          assert_equal list_words.length, @l.word_count
+          lw0 = list_words[0]
+          assert_equal lw0['wordstring'], "giraffe"
+        end
+
+      end
+
     end
 
   end
