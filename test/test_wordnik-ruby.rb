@@ -8,13 +8,6 @@ class TestWordnikRuby < Test::Unit::TestCase
     end
   end
 
-  should "raise ApiServerError if invalid auth credentials in initializer" do
-    assert_raise(ApiNotFoundError) do
-      Wordnik.new({:api_key=>"blerg", :username=>"blergyblergmcblerg", :password=>""})
-    end
-  end
-
-
   context "a valid api key" do
     setup do
       @api_key = "test_api_key"
@@ -91,7 +84,6 @@ class TestWordnikRuby < Test::Unit::TestCase
           end
         end
       end
-
 
     end
 

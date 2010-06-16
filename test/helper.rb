@@ -10,6 +10,8 @@ require 'wordnik-ruby'
 class Test::Unit::TestCase
 end
 
+FakeWeb.allow_net_connect = false
+
 def fixture_file(filename)
   return "" if filename == ""
   file_path = File.expand_path(File.dirname(__FILE__) + "/fixtures/" + filename)
