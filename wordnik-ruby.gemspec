@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Altay Guvench"]
-  s.date = %q{2010-06-02}
+  s.date = %q{2010-06-16}
   s.description = %q{The official gem for the wordnik.com API}
   s.email = %q{aguvench@gmail.com}
   s.extra_rdoc_files = [
@@ -28,6 +28,13 @@ Gem::Specification.new do |s|
      "lib/wordnik-ruby/example.rb",
      "lib/wordnik-ruby/list.rb",
      "lib/wordnik-ruby/word.rb",
+     "test/fixtures/user_token.json",
+     "test/fixtures/word_definitions.json",
+     "test/fixtures/word_examples.json",
+     "test/fixtures/word_find.json",
+     "test/fixtures/word_related.json",
+     "test/fixtures/wordlist_words.json",
+     "test/fixtures/wordlists.json",
      "test/helper.rb",
      "test/test_wordnik-ruby.rb",
      "wordnik-ruby.gemspec"
@@ -50,15 +57,18 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<thoughtbot-shoulda>, [">= 0"])
       s.add_runtime_dependency(%q<httparty>, [">= 0"])
       s.add_runtime_dependency(%q<json>, [">= 0"])
+      s.add_runtime_dependency(%q<fakeweb>, [">= 0"])
     else
       s.add_dependency(%q<thoughtbot-shoulda>, [">= 0"])
       s.add_dependency(%q<httparty>, [">= 0"])
       s.add_dependency(%q<json>, [">= 0"])
+      s.add_dependency(%q<fakeweb>, [">= 0"])
     end
   else
     s.add_dependency(%q<thoughtbot-shoulda>, [">= 0"])
     s.add_dependency(%q<httparty>, [">= 0"])
     s.add_dependency(%q<json>, [">= 0"])
+    s.add_dependency(%q<fakeweb>, [">= 0"])
   end
 end
 
