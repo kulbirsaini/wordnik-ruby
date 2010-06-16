@@ -25,7 +25,7 @@ class Wordnik
   include HTTParty
   base_uri 'http://api.wordnik.com/api'
   
-  attr_accessor :api_key, :auth_token
+  attr_accessor :api_key, :auth_token, :user_id
 
   def authenticated?
     return !self.auth_token.blank?
