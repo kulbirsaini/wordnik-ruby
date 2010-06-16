@@ -42,9 +42,10 @@ class Wordnik
 
   # this initializes the wordnik api client
   # options[:api_key] is REQUIRED 
+  # e.g. w = Wordnik.new({:api_key=>'my_api_key'})
   # if you want to access the "write" api calls (e.g. List creation/deletion), you need to also pass in options[:username] and options[:password] to authenticate
   # e.g. w = Wordnik.new({:username=>'my_username', :password=>'my_password', :api_key=>'my_api_key'})
-  # this will set the @api_key, @auth_token, and @user_id variables
+  # this will set the @api_key, @auth_token, and @user_id attributes
   def initialize(options={}) 
     raise(InvalidApiKeyError, "Missing api_key!") if options[:api_key].blank? 
     @api_key = options[:api_key]
@@ -53,13 +54,12 @@ class Wordnik
     if options[:username] && options[:password]
       response = Wordnik.get("/account.json/authenticate/#{options[:username]}", {:query=>{:password=>options[:password]}, :headers => {'Content-Type'=>'application/json', 'api_key' => @api_key}})
       if (response['type'] && response['type']=='error')
-        puts("ERROR: #{response['message']}")
+        raise(ApiServerError, "ERROR: #{response['message']}")
       elsif (response['userId'])
-        puts('access GRANTED!')
         @auth_token = response['token']
         @user_id = response['userId']
       else
-        puts("access DENIED! make sure you're passing a valid :username, :password, and :api_key to Wordnik.new")
+        raise(ApiServerError, "access DENIED! make sure you're passing a valid :username, :password, and :api_key to Wordnik.new")
       end
     end
     @@client = self # so we can do Wordnik.client
