@@ -65,6 +65,12 @@ class Wordnik
     @@client = self # so we can do Wordnik.client
     return self
   end
+
+  # returns the word of the day
+  def word_of_the_day
+    wotd = Wordnik.get("/wordoftheday.json", {:headers=>self.api_headers})
+    return wotd
+  end
   
   # this returns the api headers (including api_key and auth_token) for the wordnik api client
   def api_headers

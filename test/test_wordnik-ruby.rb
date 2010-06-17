@@ -36,6 +36,17 @@ class TestWordnikRuby < Test::Unit::TestCase
         assert_equal @w.api_headers, {'Content-Type'=>'application/json', 'api_key' => @api_key}
       end
 
+      should 'get the word of the day' do
+        stub_get('/wordoftheday.json', 'wotd.json')
+        wotd = @w.word_of_the_day
+        assert_equal wotd['wordstring'], 'stammel'
+        assert_equal wotd['note'], "Stammel is probably an alteration of a Latin word meaning 'consisting of threads'."
+        ['definition', 'example'].each do |attr|
+          assert wotd[attr].is_a?(Array)
+          assert_equal wotd[attr].length, 3
+        end
+      end
+
       should 'find a word' do
         stub_get('/word.json/cat', 'word_find.json')
         word = Word.find('cat')
