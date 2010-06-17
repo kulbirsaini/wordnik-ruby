@@ -55,4 +55,10 @@ class Word
     return word_phrases
   end
 
+  # see how often this word appears before punctuation (period, question mark, exclamation point)
+  def punctuation
+    punctuation_factor = Wordnik.get("/word.json/#{URI.escape(self.wordstring)}/punctuationFactor", {:headers => self.client.api_headers})
+    return punctuation_factor
+  end
+
 end

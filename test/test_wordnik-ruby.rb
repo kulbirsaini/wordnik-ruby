@@ -123,6 +123,16 @@ class TestWordnikRuby < Test::Unit::TestCase
           assert_equal p0['gram2'], 'cat'
         end
 
+        should 'get punctuation factor for a word' do
+          stub_get('/word.json/cat/punctuationFactor', 'word_punctuation.json')
+          punctuation = @word.punctuation
+          assert punctuation.is_a?(Hash)
+          assert_equal punctuation['exclamationPointCount'], 1787
+          assert_equal punctuation['questionMarkCount'], 1365
+          assert_equal punctuation['periodCount'], 27245
+          assert_equal punctuation['totalCount'], 112461
+        end
+
       end
 
     end
