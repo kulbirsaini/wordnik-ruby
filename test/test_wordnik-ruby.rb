@@ -112,6 +112,17 @@ class TestWordnikRuby < Test::Unit::TestCase
             end
           end
         end
+
+        should 'get bigram phrases for a word' do
+          stub_get('/word.json/cat/phrases', 'word_phrases.json')
+          phrases = @word.phrases
+          assert phrases.is_a?(Array)
+          assert_equal phrases.length, 5
+          p0 = phrases[0]
+          assert_equal p0['gram1'], 'keyboard'
+          assert_equal p0['gram2'], 'cat'
+        end
+
       end
 
     end

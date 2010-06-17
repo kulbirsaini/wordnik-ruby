@@ -48,4 +48,11 @@ class Word
     return related_hash
   end
 
+  # get phrases that contain this word
+  # e.g. Word.find("Christmas").phrases => ["merry Christmas", "Christmas Eve", "Christmas tree", ...]
+  def phrases
+    word_phrases = Wordnik.get("/word.json/#{URI.escape(self.wordstring)}/phrases", {:headers => self.client.api_headers})
+    return word_phrases
+  end
+
 end
