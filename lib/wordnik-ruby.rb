@@ -80,6 +80,19 @@ class Wordnik
     return Word.new(random)
   end
 
+  # given a search fragment, this will return words starting with that fragment
+  # results are ordered by number of appearances in the Wordnik corpus
+  # for example, wordnik.autocomplete("an") will return "answered", "answers", "analysts", "announce", ...
+  # takes two optional arguments, :per_page and :page
+  # NOTE: the search fragment itself will always be returned as the first result!
+  def autocomplete(search_fragment, options={})
+    options[:per_page] ||= 15
+    options[:page] ||= 1
+    start_index = (options[:per_page]*(options[:page]-1))
+    search_results = Wordnik.get("/suggest.json/#{URI.escape(search_fragment)}", {:headers=>self.api_headers, :query=>{:maxResults=>options[:per_page], :startAt=>start_index}})
+    return search_results
+  end
+
   # this returns the api headers (including api_key and auth_token) for the wordnik api client
   def api_headers
     the_headers = {'Content-Type'=>'application/json', 'api_key' => @api_key}

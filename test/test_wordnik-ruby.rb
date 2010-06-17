@@ -53,6 +53,18 @@ class TestWordnikRuby < Test::Unit::TestCase
         assert randar.is_a?(Word)
       end
 
+      should 'get autocomplete results' do
+        stub_get('/suggest.json/an?maxResults=15&startAt=0', 'word_autocomplete.json')
+        search_results = @w.autocomplete('an', {:page=>1, :per_page=>15})
+        assert search_results['match'].is_a?(Array)
+        assert_equal search_results['match'].length, 16
+        assert_equal search_results['match'][1]['wordstring'], 'answered'
+        assert search_results['matches'].is_a?(Fixnum)
+        assert search_results['more'].is_a?(Fixnum)
+        assert search_results['searchTerm'].is_a?(Hash)
+        assert search_results['searchTerm']['wordstring']=='an'
+      end
+
       should 'find a word' do
         stub_get('/word.json/cat', 'word_find.json')
         word = Word.find('cat')
