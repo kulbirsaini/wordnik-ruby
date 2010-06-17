@@ -61,4 +61,10 @@ class Word
     return punctuation_factor
   end
 
+  # fetches a word’s text pronunciation from the Wordnik corpus, in arpabet and/or gcide-diacritical format
+  def text_pronunciation
+    text_pron = Wordnik.get("/word.json/#{URI.escape(self.wordstring)}/pronunciations")
+    return text_pron
+  end
+
 end

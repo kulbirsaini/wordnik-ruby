@@ -133,6 +133,14 @@ class TestWordnikRuby < Test::Unit::TestCase
           assert_equal punctuation['totalCount'], 112461
         end
 
+        should 'get text pron for a word' do
+          stub_get('/word.json/cat/pronunciations', 'word_text_pron.json')
+          text_pron = @word.text_pronunciation
+          assert text_pron.is_a?(Array)
+          assert_equal text_pron[0]['rawType'], 'gcide-diacritical'
+          assert_equal text_pron[1]['rawType'], 'arpabet'
+        end
+
       end
 
     end
