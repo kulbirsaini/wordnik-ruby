@@ -47,6 +47,12 @@ class TestWordnikRuby < Test::Unit::TestCase
         end
       end
 
+      should 'get a random word' do
+        stub_get('/words.json/randomWord?hasDictionaryDef=true', 'word_random.json')
+        randar = @w.random_word
+        assert randar.is_a?(Word)
+      end
+
       should 'find a word' do
         stub_get('/word.json/cat', 'word_find.json')
         word = Word.find('cat')

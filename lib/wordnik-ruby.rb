@@ -71,7 +71,15 @@ class Wordnik
     wotd = Wordnik.get("/wordoftheday.json", {:headers=>self.api_headers})
     return wotd
   end
-  
+
+  # returns a random word
+  # takes a single option, has_definition (default: true)
+  # this guarantees that the word has at least one definition (i.e. is a 'real' word)
+  def random_word(has_definition=true)
+    random = Wordnik.get("/words.json/randomWord", {:headers=>self.api_headers, :query=>{:hasDictionaryDef=>has_definition}})
+    return Word.new(random)
+  end
+
   # this returns the api headers (including api_key and auth_token) for the wordnik api client
   def api_headers
     the_headers = {'Content-Type'=>'application/json', 'api_key' => @api_key}
