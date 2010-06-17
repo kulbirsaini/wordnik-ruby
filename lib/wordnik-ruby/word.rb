@@ -14,29 +14,30 @@ class Word
   end
   
   # find a word, e.g. Word.find('cat')
+  # returns a Word object
   def self.find(the_wordstring)
-    word_data = Wordnik.get("/word.json/#{the_wordstring}", {:headers => Wordnik.client.api_headers})
+    word_data = Wordnik.get("/word.json/#{URI.escape(the_wordstring)}", {:headers => Wordnik.client.api_headers})
     return Word.new(word_data)
   end
 
   # get this word's definitions
   # returns an array of Definition objects
   def definitions
-    raw_defs = Wordnik.get("/word.json/#{self.wordstring}/definitions", {:headers => self.client.api_headers} )
+    raw_defs = Wordnik.get("/word.json/#{URI.escape(self.wordstring)}/definitions", {:headers => self.client.api_headers} )
     return raw_defs.map{|definition| Definition.new(definition) }
   end
 
   # get example sentences for this word
   # returns an array of Example objects
   def examples
-    raw_examples = Wordnik.get("/word.json/#{self.wordstring}/examples", {:headers => self.client.api_headers} )
+    raw_examples = Wordnik.get("/word.json/#{URI.escape(self.wordstring)}/examples", {:headers => self.client.api_headers} )
     return raw_examples.map{|example| Example.new(example) }
   end
 
   # get this word's related words
   # returns a hash -- keys are relation type (e.g. synonym, antonym, hyponym, etc), values are arrays of Word objects
   def related
-    raw_related = Wordnik.get("/word.json/#{self.wordstring}/related", {:headers => self.client.api_headers})
+    raw_related = Wordnik.get("/word.json/#{URI.escape(self.wordstring)}/related", {:headers => self.client.api_headers})
     related_hash = {}
     raw_related.each{|type|
       related_hash[type['relType']] ||= []
