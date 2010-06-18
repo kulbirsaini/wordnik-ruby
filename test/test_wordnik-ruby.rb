@@ -108,7 +108,7 @@ class TestWordnikRuby < Test::Unit::TestCase
         end
 
         should 'get related words for a word' do
-          stub_get('/word.json/cat/related', 'word_related.json')
+          stub_get('/word.json/cat/related?limit=100&type=', 'word_related.json')
           related = @word.related
           assert_equal related.keys.sort, ["cross-reference", "equivalent", "form", "hyponym", "same-context", "synonym", "variant", "verb-form"]
           related.each do |k,v| 

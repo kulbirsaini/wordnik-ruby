@@ -54,8 +54,15 @@ class Word
 
   # get this word's related words
   # returns a hash -- keys are relation type (e.g. synonym, antonym, hyponym, etc), values are arrays of Word objects
-  def related
-    raw_related = Wordnik.get("/word.json/#{URI.escape(self.wordstring)}/related", {:headers => self.client.api_headers})
+  # two optional arguments:
+  # :limit - the number of results
+  # :type - restrict the results to the given relationship type. if you want multiple types, separate them with commas, e.g. :type=>'synonym,antonym'
+  # available relationship types are synonym, antonym, form, hyponym, variant, verb-stem, verb-form, cross-reference, same-context
+  # for an explanation of each relationship type, see http://docs.wordnik.com/api/methods#relateds
+  def related(options={})
+    options[:limit] ||= 100
+    options[:type] ||= nil
+    raw_related = Wordnik.get("/word.json/#{URI.escape(self.wordstring)}/related", {:headers => self.client.api_headers, :query=>{:limit=>options[:limit], :type=>options[:type]}})
     related_hash = {}
     raw_related.each{|type|
       related_hash[type['relType']] ||= []
