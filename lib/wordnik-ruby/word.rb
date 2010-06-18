@@ -61,8 +61,10 @@ class Word
 
   # get phrases that contain this word
   # e.g. Word.find("Christmas").phrases => ["merry Christmas", "Christmas Eve", "Christmas tree", ...]
-  def phrases
-    word_phrases = Wordnik.get("/word.json/#{URI.escape(self.wordstring)}/phrases", {:headers => self.client.api_headers})
+  # has one option, :limit, which specifies the number of results (default=10)
+  def phrases(options={})
+    options[:limit] ||= 10
+    word_phrases = Wordnik.get("/word.json/#{URI.escape(self.wordstring)}/phrases", {:headers => self.client.api_headers, :query=>{:limit=>options[:limit]}})
     return word_phrases
   end
 
