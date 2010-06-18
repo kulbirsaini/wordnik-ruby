@@ -86,7 +86,7 @@ class TestWordnikRuby < Test::Unit::TestCase
         end
 
         should 'get definitions for a word' do
-          stub_get('/word.json/cat/definitions?limit=10', 'word_definitions.json')
+          stub_get('/word.json/cat/definitions?limit=10&partOfSpeech=', 'word_definitions.json')
           definitions = @word.definitions
           assert_equal definitions.length, 11
           d0 = definitions[0]

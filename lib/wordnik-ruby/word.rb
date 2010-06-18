@@ -33,10 +33,15 @@ class Word
 
   # get this word's definitions
   # returns an array of Definition objects
-  # has one option, :limit, which specifies the number of results (default=10)
+  # has two options:
+  # :limit - specifies the number of results (default=10)
+  # :part_of_speech - restricts definitions to the given part of speech. you can ask for multiple parts of speech, like :part_of_speech=>"noun,verb,adjective"
+  # supported parts of speech are:
+  # noun, verb, adjective, adverb, idiom, article, abbreviation, preposition, prefix, interjection, suffix, conjunction, adjective_and_adverb, noun_and_adjective, noun_and_verb_transitive, noun_and_verb, past_participle, imperative, noun_plural, proper_noun_plural, verb_intransitive, proper_noun, adjective_and_noun, imperative_and_past_participle, pronoun, verb_transitive, noun_and_verb_intransitive, adverb_and_preposition, proper_noun_posessive, noun_posessive
   def definitions(options={})
     options[:limit] ||= 10
-    raw_defs = Wordnik.get("/word.json/#{URI.escape(self.wordstring)}/definitions", {:headers => self.client.api_headers, :query=>{:limit=>options[:limit]}} )
+    options[:part_of_speech] ||= nil
+    raw_defs = Wordnik.get("/word.json/#{URI.escape(self.wordstring)}/definitions", {:headers => self.client.api_headers, :query=>{:limit=>options[:limit], :partOfSpeech=>options[:part_of_speech]}} )
     return raw_defs.map{|definition| Definition.new(definition) }
   end
 
