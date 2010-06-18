@@ -33,8 +33,10 @@ class Word
 
   # get this word's definitions
   # returns an array of Definition objects
-  def definitions
-    raw_defs = Wordnik.get("/word.json/#{URI.escape(self.wordstring)}/definitions", {:headers => self.client.api_headers} )
+  # has one option, :limit, which specifies the number of results (default=10)
+  def definitions(options={})
+    options[:limit] ||= 10
+    raw_defs = Wordnik.get("/word.json/#{URI.escape(self.wordstring)}/definitions", {:headers => self.client.api_headers, :query=>{:limit=>options[:limit]}} )
     return raw_defs.map{|definition| Definition.new(definition) }
   end
 
