@@ -66,15 +66,22 @@ class TestWordnikRuby < Test::Unit::TestCase
       end
 
       should 'find a word' do
-        stub_get('/word.json/cat', 'word_find.json')
+        stub_get('/word.json/cat?literal=true&useSuggest=', 'word_find.json')
         word = Word.find('cat')
         assert word.is_a?(Word)
         assert_equal word.wordstring, 'cat'
       end
 
+      should 'find a word with useSuggest=true' do
+        stub_get('/word.json/cat?literal=true&useSuggest=true', 'word_find.json')
+        word_data = Word.find('cat', :use_suggest=>true)
+        assert word_data.is_a?(Hash)
+        assert_equal word_data['wordstring'], 'cat'
+      end
+
       context "a valid word" do
         setup do
-          stub_get('/word.json/cat', 'word_find.json')
+          stub_get('/word.json/cat?literal=true&useSuggest=', 'word_find.json')
           @word = Word.find('cat')
         end
 

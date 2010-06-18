@@ -15,9 +15,20 @@ class Word
   
   # find a word, e.g. Word.find('cat')
   # returns a Word object
-  def self.find(the_wordstring)
-    word_data = Wordnik.get("/word.json/#{URI.escape(the_wordstring)}", {:headers => Wordnik.client.api_headers})
-    return Word.new(word_data)
+  # takes two optional arguments, :use_suggest and :literal
+  # if options[:use_suggest]=true, it'll return an array of suggestions for your word.  
+  # e.g. Word.find('Zeebra', {:use_suggest=>true}) will return {'id':87264, 'suggestions'=>['zebra'], 'wordstring'=>'Zeebra'}
+  # if options[:use_suggest]=true and options[:literal]=false, it won't return an array of suggestions -- it'll simply return the most likely candidate 
+  # e.g. Word.find('Zeebra', {:use_suggest=>true, :literal=>false}) will return {'id':87264, 'wordstring'=>'Zeebra'}
+  def self.find(the_wordstring, options={})
+    options[:use_suggest] ||= nil
+    options[:not_literal] ||= false
+    word_data = Wordnik.get("/word.json/#{URI.escape(the_wordstring)}", {:headers=>Wordnik.client.api_headers, :query=>{:useSuggest=>options[:use_suggest], :literal=>!options[:not_literal]}})
+    if (options[:use_suggest].nil? || (options[:use_suggest] && options[:not_literal]))
+      return Word.new(word_data)
+    else
+      return word_data
+    end
   end
 
   # get this word's definitions
