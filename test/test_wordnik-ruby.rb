@@ -3,8 +3,8 @@ require 'helper'
 class TestWordnikRuby < Test::Unit::TestCase
 
   should "raise InvalidApiKeyError if no api key specified in initializer" do
-    assert_raise(InvalidApiKeyError) do
-      Wordnik.new
+    assert_raise(Wordnik::InvalidApiKeyError) do
+      Wordnik::Wordnik.new
     end
   end
 
@@ -14,8 +14,8 @@ class TestWordnikRuby < Test::Unit::TestCase
     end
 
     should "instantiate a Wordnik object without authentication" do
-      w = Wordnik.new({:api_key=>@api_key})
-      assert_equal w.class, Wordnik
+      w = Wordnik::Wordnik.new({:api_key=>@api_key})
+      assert_equal w.class, Wordnik::Wordnik
       assert_equal w.api_key, @api_key
       assert w.auth_token.nil?
       assert w.user_id.nil?
@@ -24,12 +24,12 @@ class TestWordnikRuby < Test::Unit::TestCase
 
     context "a valid, unauthenticated Wordnik client" do
       setup do
-        @w = Wordnik.new({:api_key=>@api_key})
+        @w = Wordnik::Wordnik.new({:api_key=>@api_key})
       end
 
       should "raise InvalidAuthTokenError for api methods that require authentication, if no valid auth_key" do
-        assert_raise(InvalidAuthTokenError){ @w.lists }
-        assert_raise(InvalidAuthTokenError){ @w.create_list("testlist", "testdescription") }
+        assert_raise(Wordnik::InvalidAuthTokenError){ @w.lists }
+        assert_raise(Wordnik::InvalidAuthTokenError){ @w.create_list("testlist", "testdescription") }
       end
 
       should "get api headers" do
@@ -50,7 +50,7 @@ class TestWordnikRuby < Test::Unit::TestCase
       should 'get a random word' do
         stub_get('/words.json/randomWord?hasDictionaryDef=true', 'word_random.json')
         randar = @w.random_word
-        assert randar.is_a?(Word)
+        assert randar.is_a?(Wordnik::Word)
       end
 
       should 'get autocomplete results' do
@@ -67,14 +67,14 @@ class TestWordnikRuby < Test::Unit::TestCase
 
       should 'find a word' do
         stub_get('/word.json/cat?literal=true&useSuggest=', 'word_find.json')
-        word = Word.find('cat')
-        assert word.is_a?(Word)
+        word = Wordnik::Word.find('cat')
+        assert word.is_a?(Wordnik::Word)
         assert_equal word.wordstring, 'cat'
       end
 
       should 'find a word with useSuggest=true' do
         stub_get('/word.json/cat?literal=true&useSuggest=true', 'word_find.json')
-        word_data = Word.find('cat', :use_suggest=>true)
+        word_data = Wordnik::Word.find('cat', :use_suggest=>true)
         assert word_data.is_a?(Hash)
         assert_equal word_data['wordstring'], 'cat'
       end
@@ -82,7 +82,7 @@ class TestWordnikRuby < Test::Unit::TestCase
       context "a valid word" do
         setup do
           stub_get('/word.json/cat?literal=true&useSuggest=', 'word_find.json')
-          @word = Word.find('cat')
+          @word = Wordnik::Word.find('cat')
         end
 
         should 'get definitions for a word' do
@@ -90,7 +90,7 @@ class TestWordnikRuby < Test::Unit::TestCase
           definitions = @word.definitions
           assert_equal definitions.length, 11
           d0 = definitions[0]
-          assert d0.is_a?(Definition)
+          assert d0.is_a?(Wordnik::Definition)
           assert_equal d0.headword, 'cat'
           assert_equal d0.part_of_speech, 'noun'
           assert_equal d0.text, "Any animal belonging to the natural family Felidae, and in particular to the various species of the genera Felis, Panthera, and Lynx. The domestic cat is Felis domestica. The European wild cat (Felis catus) is much larger than the domestic cat. In the United States the name wild cat is commonly applied to the bay lynx (Lynx rufus). The larger felines, such as the lion, tiger, leopard, and cougar, are often referred to as cats, and sometimes as big cats. See wild cat, and tiger cat."
@@ -101,7 +101,7 @@ class TestWordnikRuby < Test::Unit::TestCase
           examples = @word.examples
           assert_equal examples.length, 5
           e0 = examples[0]
-          assert e0.is_a?(Example)
+          assert e0.is_a?(Wordnik::Example)
           assert_equal e0.year, 1992
           assert_equal e0.title, "Timegod's World"
           assert_equal e0.display, "That mountain cat is a very confused young hunter, and he might not attack you the next time, and you might be able to dive out of the way again."
@@ -114,7 +114,7 @@ class TestWordnikRuby < Test::Unit::TestCase
           related.each do |k,v| 
             assert v.is_a?(Array)
             v.each do |rel_word|
-              assert rel_word.is_a?(Word)
+              assert rel_word.is_a?(Wordnik::Word)
               assert_equal rel_word.rel_type, k
             end
           end
@@ -153,10 +153,10 @@ class TestWordnikRuby < Test::Unit::TestCase
     end
 
     should "instantiate a Wordnik object with authentication" do
-      Wordnik.new({:api_key=>@api_key})
+      Wordnik::Wordnik.new({:api_key=>@api_key})
       stub_get('/account.json/authenticate/test_user?password=test_pw', 'user_token.json')
-      w = Wordnik.new({:api_key=>@api_key, :username=>"test_user", :password=>"test_pw"})
-      assert_equal w.class, Wordnik
+      w = Wordnik::Wordnik.new({:api_key=>@api_key, :username=>"test_user", :password=>"test_pw"})
+      assert_equal w.class, Wordnik::Wordnik
       assert_equal w.api_key, @api_key
       assert w.auth_token, "test_token"
       assert w.user_id, 1234567
@@ -165,9 +165,9 @@ class TestWordnikRuby < Test::Unit::TestCase
 
     context "a valid, authenticated Wordnik client" do
       setup do
-        Wordnik.new({:api_key=>@api_key})
+        Wordnik::Wordnik.new({:api_key=>@api_key})
         stub_get('/account.json/authenticate/test_user?password=test_pw', 'user_token.json')
-        @w = Wordnik.new({:api_key=>@api_key, :username=>"test_user", :password=>"test_pw"})
+        @w = Wordnik::Wordnik.new({:api_key=>@api_key, :username=>"test_user", :password=>"test_pw"})
       end
 
       should "get a user's lists" do
@@ -184,7 +184,7 @@ class TestWordnikRuby < Test::Unit::TestCase
         end
 
         should "validate the test list's attrs" do
-          assert @l.is_a?(List)
+          assert @l.is_a?(Wordnik::List)
           assert_equal @l.user_name, 'test_user'
           assert_equal @l.name, "animals"
           assert_equal @l.description, "a trip to the zoo"

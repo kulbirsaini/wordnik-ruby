@@ -24,25 +24,25 @@ end
 
 def stub_get(url, filename, status=nil)
   options = {:body => fixture_file(filename)}
-  options.merge!(Wordnik.client.api_headers)
+  options.merge!(Wordnik::Wordnik.client.api_headers)
   options.merge!({:status => status}) unless status.nil?
   FakeWeb.register_uri(:get, wordnik_url(url), options)
 end
 
 def stub_post(url, filename)
   options = {:body => fixture_file(filename)}
-  options.merge!(Wordnik.client.api_headers)
+  options.merge!(Wordnik::Wordnik.client.api_headers)
   FakeWeb.register_uri(:post, wordnik_url(url), options)
 end
 
 def stub_put(url, filename)
   options = {:body => fixture_file(filename)}
-  options.merge!(Wordnik.client.api_headers)
+  options.merge!(Wordnik::Wordnik.client.api_headers)
   FakeWeb.register_uri(:put, wordnik_url(url), options)
 end
 
 def stub_delete(url, filename)
   options = {:body => fixture_file(filename)}
-  options.merge!(Wordnik.client.api_headers)
+  options.merge!(Wordnik::Wordnik.client.api_headers)
   FakeWeb.register_uri(:delete, wordnik_url(url), options)
 end
