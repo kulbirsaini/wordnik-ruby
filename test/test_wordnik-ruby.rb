@@ -148,6 +148,16 @@ class TestWordnikRuby < Test::Unit::TestCase
           assert_equal text_pron[1]['rawType'], 'arpabet'
         end
 
+        should 'get frequency data for a word' do
+          stub_get('/word.json/cat/frequency', 'word_frequency.json')
+          freq_data = @word.frequency
+          assert freq_data.is_a?(Hash)
+          assert_equal freq_data['totalCount'], 112461
+          assert freq_data['frequency'].is_a?(Array)
+          assert freq_data['frequencyString'].is_a?(String)
+          assert_equal freq_data['unknownYearCount'], 11966
+        end
+
       end
 
     end
