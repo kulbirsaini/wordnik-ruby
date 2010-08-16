@@ -34,7 +34,7 @@ This will allow you to access all api methods, including writing to the Wordnik 
   => true
 
 Find a word:
-  >> cat = Word.find('cat')
+  >> cat = Wordnik::Word.find('cat')
   => #<Wordnik::Word:0x601a30 @id=27568, @rel_type=nil, @wordstring="cat">
 
 Get that word's definitions:
@@ -84,3 +84,5 @@ I'm sick of collecting animals. Let's destroy this list:
 == Copyright
 
 Copyright (c) 2009 John McGrath / Altay Guvench / Wordnik.com. See LICENSE for details.
+Thanks to Kulbir Saini (http://github.com/kulbirsaini) for contributing to this gem.  
+Patches are very welcome!
