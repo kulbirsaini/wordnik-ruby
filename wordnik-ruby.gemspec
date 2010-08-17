@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Altay Guvench"]
-  s.date = %q{2010-08-16}
+  s.date = %q{2010-08-18}
   s.description = %q{The official gem for the wordnik.com API}
   s.email = %q{aguvench@gmail.com}
   s.extra_rdoc_files = [
@@ -27,6 +27,8 @@ Gem::Specification.new do |s|
      "lib/wordnik-ruby/definition.rb",
      "lib/wordnik-ruby/example.rb",
      "lib/wordnik-ruby/list.rb",
+     "lib/wordnik-ruby/provider.rb",
+     "lib/wordnik-ruby/related_word.rb",
      "lib/wordnik-ruby/word.rb",
      "test/fixtures/user_token.json",
      "test/fixtures/word_autocomplete.json",
@@ -52,8 +54,8 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.7}
   s.summary = %q{The official gem for the wordnik.com API}
   s.test_files = [
-    "test/helper.rb",
-     "test/test_wordnik-ruby.rb"
+    "test/test_wordnik-ruby.rb",
+     "test/helper.rb"
   ]
 
   if s.respond_to? :specification_version then

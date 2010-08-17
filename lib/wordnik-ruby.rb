@@ -5,6 +5,8 @@ require 'wordnik-ruby/word'
 require 'wordnik-ruby/definition'
 require 'wordnik-ruby/example'
 require 'wordnik-ruby/list'
+require 'wordnik-ruby/provider'
+require 'wordnik-ruby/related_word'
 
 module Wordnik
   class ApiNotFoundError < StandardError
