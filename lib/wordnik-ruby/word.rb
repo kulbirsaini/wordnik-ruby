@@ -99,8 +99,12 @@ module Wordnik
 
     # fetches a word's frequency over the years
     def frequency
-      word_frequency = Wordnik.get("/word.json/#{URI.escape(self.wordstring)}/frequency", {:headers => self.client.api_headers})
-      return word_frequency.parsed_response
+      begin
+        word_frequency = Wordnik.get("/word.json/#{URI.escape(self.wordstring)}/frequency", {:headers => self.client.api_headers})
+        return word_frequency.parsed_response
+      rescue ApiNotFoundError
+        {}
+      end
     end
 
   end
